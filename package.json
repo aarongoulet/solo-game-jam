@@ -1,0 +1,14 @@
+{
+  "name": "solo-game-jam",
+  "type": "module",
+  "version": "0.0.1",
+  "description": "A solo game jam project.",
+  "main": "index.ts",
+  "private": true,
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "5.6.2"
+  }
+}

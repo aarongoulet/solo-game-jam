@@ -1,0 +1,10 @@
+html, body {
+    background-color: #333333;
+    text-align: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+#game {
+    background-color: #000000;
+}
