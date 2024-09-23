@@ -1,14 +1,17 @@
 import {SpriteSheet} from "./sprites.js";
+import {Scene} from "./scene.js";
 
 export class Game {
     private readonly _canvas: HTMLCanvasElement;
     private _lastUpdate: number;
     private readonly _spriteSheet: SpriteSheet;
+    private _scene: Scene;
 
-    constructor(canvas: HTMLCanvasElement, spriteSheet: SpriteSheet) {
+    constructor(canvas: HTMLCanvasElement, spriteSheet: SpriteSheet, startingScene: Scene) {
         this._canvas = canvas;
         this._lastUpdate = 0;
         this._spriteSheet = spriteSheet;
+        this._scene = startingScene;
     }
 
     public start() {
@@ -26,6 +29,19 @@ export class Game {
 
     public get sprites(): SpriteSheet {
         return this._spriteSheet;
+    }
+
+    public get scene(): Scene {
+        return this._scene;
+    }
+
+    public set scene(scene: Scene) {
+        this._scene = scene;
+        this._scene.initialize(this)
+    }
+
+    public get canvas(): HTMLCanvasElement {
+        return this._canvas;
     }
 
     private run(timestamp: number) {
@@ -57,23 +73,12 @@ export class Game {
     }
 
     protected draw(context: CanvasRenderingContext2D, delta: number) {
-        // The following is for demo purposes only.
-        let offsetX = 16
-        let offsetY = 26
-        context.drawImage(this.sprites.getByIndex(5), offsetX, offsetY);
-        context.drawImage(this.sprites.getByIndex(20), offsetX + 16, offsetY);
-        context.drawImage(this.sprites.getByIndex(143), offsetX + 32, offsetY);
-        context.drawImage(this.sprites.getByIndex(7), offsetX + 64, offsetY);
-        context.fillStyle = "#ffff00";
-        context.font = "9px sans-serif"
-        let fps = (1000 / delta).toFixed()
-        const output = `${fps} FPS`
-        context.fillText(output, 2, 10, 300)
-
-        // Real rendering code should go here.
+        // Delegate drawing to the current scene.
+        this._scene.draw(this, context, delta);
     }
 
     protected update(delta: number) {
-        // Game state updates go here.  Delta is the number of milliseconds passed since the last update.
+        // Delegate updates to the current scene.
+        this._scene.update(this, delta);
     }
 }
